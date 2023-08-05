@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">FeatureCustomNotification</string>
+    <string name="channel_politics">Politics</string>
+    <string name="politics_content">Politics Content</string>
+    <string name="channel_sports">Sports</string>
+    <string name="sports_content">Sports Content</string>
+    <string name="channel_entertainment">Entertainment</string>
+    <string name="entertainment_content">Entertainment Content</string>
+</resources>
