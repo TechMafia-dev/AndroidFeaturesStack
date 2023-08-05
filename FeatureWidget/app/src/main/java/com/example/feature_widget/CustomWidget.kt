@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
+import android.widget.Toast
 
 
 /**
@@ -35,48 +36,56 @@ class CustomWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
     }
-}
-
-internal fun updateAppWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
-) {
-    val widgetText = context.getString(R.string.appwidget_text)
-    // Construct the RemoteViews object
-    val views = RemoteViews(context.packageName, R.layout.custom_widget)
-//    views.setTextViewText(R.id.appwidget_text, widgetText)
-
-    // update data-base --> Takes you to the app
-    views.setOnClickPendingIntent(R.id.restretto,
-        getPendingIntent(context, 100))
-    views.setOnClickPendingIntent(R.id.espresso,
-        getPendingIntent(context, 200))
-    views.setOnClickPendingIntent(R.id.latte,
-        getPendingIntent(context, 300))
 
 
+    companion object {
+        internal fun updateAppWidget(
+            context: Context,
+            appWidgetManager: AppWidgetManager,
+            appWidgetId: Int
+        ) {
+            val widgetText = context.getString(R.string.appwidget_text)
+            // Construct the RemoteViews object
+            val views = RemoteViews(context.packageName, R.layout.custom_widget)
+            //    views.setTextViewText(R.id.appwidget_text, widgetText)
+
+            // update data-base --> Takes you to the app
+            views.setOnClickPendingIntent(
+                R.id.restretto,
+                getPendingIntent(context, 100)
+            )
+            views.setOnClickPendingIntent(
+                R.id.espresso,
+                getPendingIntent(context, 200)
+            )
+            views.setOnClickPendingIntent(
+                R.id.latte,
+                getPendingIntent(context, 300)
+            )
 
 
-    // Instruct the widget manager to update the widget
-    appWidgetManager.updateAppWidget(appWidgetId, views)
-}
+            // Instruct the widget manager to update the widget
+            appWidgetManager.updateAppWidget(appWidgetId, views)
+        }
 
-private fun getPendingIntent(context: Context, value: Int): PendingIntent {
-    //1
-    val intent = Intent(context, MainActivity::class.java)
-    //2
-    intent.action = Intent.ACTION_VIEW
-    //3
-    intent.putExtra("extra", value)
-    //4
-    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        private fun getPendingIntent(context: Context, value: Int): PendingIntent {
+            //1
+            val intent = Intent(context, MainActivity::class.java)
+            //2
+            intent.action = "widget triggered"
+            //3
+            intent.putExtra("coffee_id", value)
+            //4
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
-    //5
-    val pendingIntent = PendingIntent.getActivity(
-        context,
-        0, intent, PendingIntent.FLAG_IMMUTABLE
-    )
+            //5
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                (7000+value), intent, PendingIntent.FLAG_IMMUTABLE
+            ) // 7000 : a random non-zero number ; request id has to be unique for each pending intent
 
-    return pendingIntent
+            return pendingIntent
+        }
+
+    }
 }
